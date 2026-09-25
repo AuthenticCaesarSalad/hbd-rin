@@ -156,29 +156,7 @@ create policy "birthday-media public delete"
 
 
 -- =============================================================
---  5. OPTIONAL SEED WISHES
---     Only inserts if the messages table is still empty, so it
---     will not run again once real wishes start arriving.
--- =============================================================
-do $$
-begin
-  if not exists (select 1 from public.messages) then
-    insert into public.messages (name, relation, body, color) values
-      ('Dinda', 'friend',
-       'Happy birthday, Karina! Thank you for always being the friend who listens, laughs at my worst jokes, and shows up when it matters. May this year bring you everything you have quietly wished for.',
-       'pink'),
-      ('Keluarga Besar', 'family',
-       'Selamat ulang tahun, Putri Karina! Semoga panjang umur, sehat selalu, dan semua impianmu satu per satu menjadi nyata. Kami selalu mendoakan yang terbaik untukmu.',
-       'lavender'),
-      ('Ayu', 'friend',
-       'To the person who turns ordinary days into memories — happy birthday, Karina. Stay kind, stay curious, and please keep being exactly who you are. The world is softer with you in it.',
-       'peach');
-  end if;
-end $$;
-
-
--- =============================================================
---  6. VERIFY  (should return 3 tables and 1 bucket)
+--  5. VERIFY  (should return the 3 tables)
 -- =============================================================
 select 'messages' as object, count(*) as rows from public.messages
 union all select 'media', count(*) from public.media
