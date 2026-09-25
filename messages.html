@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personalized birthday messages for Putri Karina from friends and family">
+    <title>Birthday Messages for Putri Karina 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <div class="sparkles" id="sparkles"></div>
+        <div class="gradient-orbs" id="gradientOrbs"></div>
+    </div>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="Home - Happy Birthday Putri Karina">
+                <span class="logo-heart" aria-hidden="true">💖</span>
+                <span class="logo-text">Putri Karina</span>
+            </a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none"><a href="index.html" class="nav-link" role="menuitem">Home</a></li>
+                <li role="none"><a href="messages.html" class="nav-link active" role="menuitem" aria-current="page">Messages</a></li>
+                <li role="none"><a href="gallery.html" class="nav-link" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="thank-you.html" class="nav-link" role="menuitem">Thank You</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content" role="main">
+        <section class="page-header" aria-labelledby="page-title">
+            <div class="container">
+                <div class="page-header-decor" aria-hidden="true">
+                    <span class="decor-item">💌</span>
+                    <span class="decor-item">✨</span>
+                    <span class="decor-item">💖</span>
+                </div>
+                <h1 id="page-title" class="page-title">Messages of Love</h1>
+                <p class="page-subtitle">Heartfelt wishes from those who care about you most</p>
+            </div>
+        </section>
+
+        <section class="messages-section" aria-labelledby="messages-title">
+            <div class="container">
+                <!-- Add Message Form -->
+                <div class="add-message-card" id="addMessageCard">
+                    <button type="button" class="add-message-toggle" id="addMessageToggle" aria-expanded="false" aria-controls="messageForm">
+                        <span class="toggle-icon" aria-hidden="true">✨</span>
+                        <span>Add Your Message</span>
+                        <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6"/>
+                        </svg>
+                    </button>
+                    <form id="messageForm" class="message-form hidden" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="msgName">Your Name *</label>
+                                <input type="text" id="msgName" name="msgName" required autocomplete="name" placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="msgRelation">Relationship</label>
+                                <select id="msgRelation" name="msgRelation">
+                                    <option value="friend">👯 Friend</option>
+                                    <option value="family">👨‍👩‍👧 Family</option>
+                                    <option value="colleague">💼 Colleague</option>
+                                    <option value="other">✨ Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="msgText">Your Message *</label>
+                            <textarea id="msgText" name="msgText" required rows="5" placeholder="Share your birthday wish, a memory, or anything from the heart..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="msgColor">Card Color</label>
+                            <div class="color-options" role="radiogroup" aria-label="Choose card color">
+                                <label class="color-option">
+                                    <input type="radio" name="msgColor" value="pink" checked>
+                                    <span class="color-swatch" style="--color: #fce4ec" aria-hidden="true"></span>
+                                    <span>Blush</span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="msgColor" value="lavender">
+                                    <span class="color-swatch" style="--color: #e8eaf6" aria-hidden="true"></span>
+                                    <span>Lavender</span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="msgColor" value="mint">
+                                    <span class="color-swatch" style="--color: #e0f2f1" aria-hidden="true"></span>
+                                    <span>Mint</span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="msgColor" value="peach">
+                                    <span class="color-swatch" style="--color: #fff3e0" aria-hidden="true"></span>
+                                    <span>Peach</span>
+                                </label>
+                                <label class="color-option">
+                                    <input type="radio" name="msgColor" value="cream">
+                                    <span class="color-swatch" style="--color: #fafafa" aria-hidden="true"></span>
+                                    <span>Cream</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelMessage">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn-icon" aria-hidden="true">💌</span>
+                                Add Message
+                            </button>
+                        </div>
+                        <p id="msgFormStatus" class="form-status" aria-live="polite"></p>
+                    </form>
+                </div>
+
+                <!-- Messages Grid -->
+                <div class="messages-grid" id="messagesGrid" role="list" aria-label="Birthday messages">
+                    <!-- Messages will be dynamically inserted here -->
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state hidden" id="emptyState" role="status">
+                    <div class="empty-icon" aria-hidden="true">💌</div>
+                    <h3>No Messages Yet</h3>
+                    <p>Be the first to leave a birthday wish for Putri Karina!</p>
+                    <button type="button" class="btn btn-primary" id="firstMessageBtn">
+                        <span class="btn-icon" aria-hidden="true">✨</span>
+                        Write the First Message
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Modal for Full View -->
+        <dialog id="messageModal" class="message-modal" aria-label="Full birthday message">
+            <div class="modal-backdrop" tabindex="-1"></div>
+            <div class="modal-content message-card-modal" role="document">
+                <button class="modal-close" aria-label="Close message">&times;</button>
+                <div class="modal-message" id="modalMessage"></div>
+            </div>
+        </dialog>
+    </main>
+
+    <footer class="main-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">Made with 💖 for Putri Karina's Special Day</p>
+                <p class="footer-year">2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

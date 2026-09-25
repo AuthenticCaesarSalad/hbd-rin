@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A personalized birthday website for Putri Karina - Celebrate with love, memories, and warm wishes">
+    <title>Happy Birthday Putri Karina! 🎂</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="floating-hearts" id="floatingHearts"></div>
+        <div class="sparkles" id="sparkles"></div>
+        <div class="gradient-orbs" id="gradientOrbs"></div>
+    </div>
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="Home - Happy Birthday Putri Karina">
+                <span class="logo-heart" aria-hidden="true">💖</span>
+                <span class="logo-text">Putri Karina</span>
+            </a>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu" role="menubar">
+                <li role="none"><a href="index.html" class="nav-link active" role="menuitem" aria-current="page">Home</a></li>
+                <li role="none"><a href="messages.html" class="nav-link" role="menuitem">Messages</a></li>
+                <li role="none"><a href="gallery.html" class="nav-link" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="thank-you.html" class="nav-link" role="menuitem">Thank You</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <div class="hero-decoration top-left" aria-hidden="true">✨</div>
+                <div class="hero-decoration top-right" aria-hidden="true">🎈</div>
+                <div class="hero-decoration bottom-left" aria-hidden="true">🌸</div>
+                <div class="hero-decoration bottom-right" aria-hidden="true">🎁</div>
+
+                <h1 id="hero-title" class="hero-title">
+                    <span class="title-line">Happy Birthday,</span>
+                    <span class="title-name">Putri Karina</span>
+                    <span class="title-line">🎂</span>
+                </h1>
+
+                <p class="hero-subtitle" id="hero-subtitle">
+                    Wishing you a day filled with love, laughter, and all the happiness your heart can hold
+                </p>
+
+                <div class="hero-countdown" aria-live="polite" aria-label="Countdown to Putri's birthday">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-divider" aria-hidden="true">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-divider" aria-hidden="true">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-divider" aria-hidden="true">:</div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="messages.html" class="btn btn-primary" role="button">
+                        <span class="btn-icon" aria-hidden="true">💌</span>
+                        Read Messages
+                    </a>
+                    <a href="gallery.html" class="btn btn-secondary" role="button">
+                        <span class="btn-icon" aria-hidden="true">📸</span>
+                        View Gallery
+                    </a>
+                </div>
+
+                <div class="scroll-indicator" aria-hidden="true">
+                    <span class="scroll-text">Scroll</span>
+                    <svg class="scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M19 12l-7 7-7-7"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Preview Section -->
+        <section class="features-preview" aria-labelledby="features-title">
+            <div class="container">
+                <h2 id="features-title" class="section-title">Celebrate Together</h2>
+                <div class="features-grid">
+                    <article class="feature-card" tabindex="0">
+                        <div class="feature-icon" aria-hidden="true">💌</div>
+                        <h3 class="feature-title">Heartfelt Messages</h3>
+                        <p class="feature-desc">Read personalized wishes from friends and family who love you</p>
+                    </article>
+                    <article class="feature-card" tabindex="0">
+                        <div class="feature-icon" aria-hidden="true">📸</div>
+                        <h3 class="feature-title">Memory Gallery</h3>
+                        <p class="feature-desc">Relive precious moments through photos and videos</p>
+                    </article>
+                    <article class="feature-card" tabindex="0">
+                        <div class="feature-icon" aria-hidden="true">✨</div>
+                        <h3 class="feature-title">Interactive Magic</h3>
+                        <p class="feature-desc">Enjoy delightful animations and surprises throughout</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Message Form -->
+        <section class="quick-message" aria-labelledby="quick-msg-title">
+            <div class="container">
+                <h2 id="quick-msg-title" class="section-title">Leave a Quick Wish</h2>
+                <form id="quickMessageForm" class="message-form" novalidate>
+                    <div class="form-group">
+                        <label for="senderName">Your Name *</label>
+                        <input type="text" id="senderName" name="senderName" required autocomplete="name" placeholder="e.g., Sarah">
+                    </div>
+                    <div class="form-group">
+                        <label for="senderMessage">Your Message *</label>
+                        <textarea id="senderMessage" name="senderMessage" required rows="4" placeholder="Write your birthday wish here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-icon" aria-hidden="true">✉️</span>
+                        Send Wish
+                    </button>
+                    <p id="formStatus" class="form-status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">Made with 💖 for Putri Karina's Special Day</p>
+                <p class="footer-year">2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
