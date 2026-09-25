@@ -2,20 +2,17 @@
    BirthdayWishes for Putri Karina
    Shared client-side logic for every page.
    ------------------------------------------------------------
-   Storage strategy — two modes, chosen automatically:
+   STORAGE: Supabase only.
 
-     LOCAL MODE (default, nothing configured)
-       Messages -> localStorage   Media -> IndexedDB   Visits -> localStorage
-       Everything is private to one browser.
+   Messages, media metadata and the visit counter all live in
+   Supabase (Postgres + Storage), so every visitor sees the same
+   wishes and gallery from any device. There is no local
+   fallback — if the backend is not configured, the site says so
+   instead of silently showing private demo data.
 
-     SHARED MODE (when BACKEND below is filled in)
-       Messages, media metadata and the visit counter live in
-       Supabase (Postgres + Storage) so every visitor sees the
-       same wishes and gallery, from any device.
-
-   The backend is called over plain `fetch` against Supabase's
-   REST/Storage APIs — no SDK, no build step, no dependencies.
-   See README.md for the SQL schema and setup steps.
+   Supabase is called over plain `fetch` against its REST and
+   Storage APIs — no SDK, no build step, no dependencies.
+   See README.md and supabase-schema.sql for setup.
 
    All user-supplied text is rendered via textContent to avoid XSS.
    ============================================================ */
@@ -23,7 +20,7 @@
 'use strict';
 
 /* ------------------------------------------------------------
-   Configuration — change these values to personalise.
+   Configuration
    ------------------------------------------------------------ */
 const CONFIG = {
     name: 'Putri Karina',
@@ -32,17 +29,19 @@ const CONFIG = {
 };
 
 /* ------------------------------------------------------------
-   Optional shared backend (Supabase).
+   REQUIRED: your Supabase project details.
 
-   To enable a shared, multi-visitor experience:
-     1. Create a Supabase project (see README.md).
-     2. Run the SQL in README.md to create the tables + bucket.
-     3. Paste your project URL and PUBLIC anon key below.
-   Leave both blank to stay in local-only mode.
+   Supabase dashboard -> Settings -> API:
+     supabaseUrl     = "Project URL"
+     supabaseAnonKey = "anon public" key
+
+   Use the anon key, NOT the service_role key — the anon key is
+   public by design and is constrained by the Row Level Security
+   policies in supabase-schema.sql.
    ------------------------------------------------------------ */
 const BACKEND = {
-    supabaseUrl: 'https://vveylyryemalbwidqwtu.supabase.co',      // e.g. 'https://abcdefghijkl.supabase.co'
-    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2ZXlseXJ5ZW1hbGJ3aWRxd3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMTc5ODAsImV4cCI6MjEwNTg5Mzk4MH0.kaGXmpf8Pgrndlhdum4Z0HTuSFPXEUNpw4NZAVsoQDY',  // the public "anon" key (safe to ship; sees only what RLS allows)
+    supabaseUrl: '',      // e.g. 'https://abcdefghijkl.supabase.co'
+    supabaseAnonKey: '',  // the public "anon" key
     messagesTable: 'messages',
     mediaTable: 'media',
     mediaBucket: 'birthday-media',
@@ -53,14 +52,8 @@ function backendEnabled() {
     return Boolean(BACKEND.supabaseUrl && BACKEND.supabaseAnonKey);
 }
 
-const STORAGE_KEYS = {
-    messages: 'pk_messages',
-    visitors: 'pk_visitors'
-};
-
-const DB_NAME = 'pk_birthday_db';
-const DB_VERSION = 1;
-const MEDIA_STORE = 'media';
+const CONFIG_ERROR =
+    'Backend not configured. Set BACKEND.supabaseUrl and BACKEND.supabaseAnonKey at the top of script.js.';
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB per file
 const MAX_FILES_PER_UPLOAD = 10;
@@ -173,7 +166,6 @@ function initNavigation() {
         setOpen(toggle.getAttribute('aria-expanded') !== 'true');
     });
 
-    // Close menu when a link is chosen or focus/click leaves the nav.
     menu.addEventListener('click', (e) => {
         if (e.target.closest('a')) setOpen(false);
     });
@@ -186,7 +178,6 @@ function initNavigation() {
         if (e.key === 'Escape') setOpen(false);
     });
 
-    // Reset state when resizing back to desktop.
     window.addEventListener('resize', () => {
         if (window.innerWidth > 860) setOpen(false);
     });
@@ -232,16 +223,8 @@ function initCountdown() {
 }
 
 /* ------------------------------------------------------------
-   Messages — shared (Supabase) or local (localStorage)
+   Supabase REST helper
    ------------------------------------------------------------ */
-
-const RELATION_LABELS = {
-    friend: '👯 Friend',
-    family: '👨‍👩‍👧 Family',
-    other: '✨ Other'
-};
-
-/* --------- Supabase REST helper --------- */
 async function supabaseFetch(path, options = {}) {
     const base = BACKEND.supabaseUrl.replace(/\/$/, '');
     const headers = Object.assign({
@@ -265,6 +248,27 @@ async function supabaseFetch(path, options = {}) {
     return raw ? JSON.parse(raw) : null;
 }
 
+function makeId() {
+    if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+    return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function formatDate(iso) {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+const RELATION_LABELS = {
+    friend: '👯 Friend',
+    family: '👨‍👩‍👧 Family',
+    colleague: '💼 Colleague',
+    other: '✨ Other'
+};
+
+/* ------------------------------------------------------------
+   Messages
+   ------------------------------------------------------------ */
 function rowToMessage(row) {
     return {
         id: row.id,
@@ -276,34 +280,8 @@ function rowToMessage(row) {
     };
 }
 
-/* --------- Local (single-browser) store --------- */
-function localLoadMessages() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEYS.messages);
-        if (!raw) {
-            localStorage.setItem(STORAGE_KEYS.messages, JSON.stringify(DEFAULT_MESSAGES));
-            return DEFAULT_MESSAGES.slice();
-        }
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : DEFAULT_MESSAGES.slice();
-    } catch {
-        return DEFAULT_MESSAGES.slice();
-    }
-}
-
-function localSaveMessages(list) {
-    try {
-        localStorage.setItem(STORAGE_KEYS.messages, JSON.stringify(list));
-        return true;
-    } catch {
-        showToast('Could not save — browser storage is full.', 'error');
-        return false;
-    }
-}
-
-/* --------- Public message API (auto-selects backend or local) --------- */
 async function loadMessages() {
-    if (!backendEnabled()) return localLoadMessages();
+    if (!backendEnabled()) return [];
 
     try {
         const rows = await supabaseFetch(
@@ -313,16 +291,15 @@ async function loadMessages() {
         return (rows || []).map(rowToMessage);
     } catch (err) {
         console.error('[messages] load failed:', err);
-        showToast('Could not load shared messages.', 'error');
+        showToast('Could not load messages from the server.', 'error');
         return [];
     }
 }
 
 async function addMessage(msg) {
     if (!backendEnabled()) {
-        const list = localLoadMessages();
-        list.push(msg);
-        return localSaveMessages(list) ? msg : null;
+        showToast(CONFIG_ERROR, 'error', 6000);
+        return null;
     }
 
     try {
@@ -349,9 +326,7 @@ async function addMessage(msg) {
 }
 
 async function removeMessage(id) {
-    if (!backendEnabled()) {
-        return localSaveMessages(localLoadMessages().filter((m) => m.id !== id));
-    }
+    if (!backendEnabled()) return false;
 
     try {
         await supabaseFetch(
@@ -364,17 +339,6 @@ async function removeMessage(id) {
         showToast('Could not delete the message.', 'error');
         return false;
     }
-}
-
-function makeId() {
-    if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
-    return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-function formatDate(iso) {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return '';
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 /**
@@ -572,7 +536,7 @@ function openMessageModal(msg) {
     modal.showModal();
 }
 
-/* Quick wish form on the homepage (same store, shorter form) */
+/* Quick wish form on the homepage */
 function initQuickMessageForm() {
     const form = $('#quickMessageForm');
     if (!form) return;
@@ -628,72 +592,8 @@ function initQuickMessageForm() {
 }
 
 /* ------------------------------------------------------------
-   Media storage
-     Local mode  -> IndexedDB blobs
-     Shared mode -> Supabase Storage + a `media` metadata table
+   Media  (Supabase Storage + `media` metadata table)
    ------------------------------------------------------------ */
-
-/* ---- Local IndexedDB primitives ---- */
-function openMediaDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-        request.onupgradeneeded = () => {
-            const db = request.result;
-            if (!db.objectStoreNames.contains(MEDIA_STORE)) {
-                db.createObjectStore(MEDIA_STORE, { keyPath: 'id' });
-            }
-        };
-
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-    });
-}
-
-function withStore(mode, run) {
-    return openMediaDB().then((db) => new Promise((resolve, reject) => {
-        const tx = db.transaction(MEDIA_STORE, mode);
-        const store = tx.objectStore(MEDIA_STORE);
-        let result;
-
-        try {
-            result = run(store);
-        } catch (err) {
-            db.close();
-            reject(err);
-            return;
-        }
-
-        tx.oncomplete = () => { db.close(); resolve(result); };
-        tx.onerror = () => { db.close(); reject(tx.error); };
-        tx.onabort = () => { db.close(); reject(tx.error); };
-    }));
-}
-
-function dbGetAll() {
-    return withStore('readonly', (store) => {
-        const out = [];
-        const request = store.openCursor();
-        request.onsuccess = () => {
-            const cursor = request.result;
-            if (cursor) {
-                out.push(cursor.value);
-                cursor.continue();
-            }
-        };
-        return out;
-    });
-}
-
-function dbPut(record) {
-    return withStore('readwrite', (store) => store.put(record));
-}
-
-function dbDelete(id) {
-    return withStore('readwrite', (store) => store.delete(id));
-}
-
-/* ---- Supabase Storage helpers ---- */
 function publicUrlFor(storagePath) {
     const base = BACKEND.supabaseUrl.replace(/\/$/, '');
     return `${base}/storage/v1/object/public/${BACKEND.mediaBucket}/${storagePath}`;
@@ -759,15 +659,8 @@ function rowToMedia(row) {
     };
 }
 
-/* ---- Public media API (auto-selects backend or local) ---- */
 async function listMedia() {
-    if (!backendEnabled()) {
-        try {
-            return await dbGetAll();
-        } catch {
-            return [];
-        }
-    }
+    if (!backendEnabled()) return [];
 
     try {
         const rows = await supabaseFetch(
@@ -777,31 +670,17 @@ async function listMedia() {
         return (rows || []).map(rowToMedia);
     } catch (err) {
         console.error('[media] load failed:', err);
-        showToast('Could not load the shared gallery.', 'error');
+        showToast('Could not load the gallery from the server.', 'error');
         return [];
     }
 }
 
 async function addMedia(file, meta) {
+    if (!backendEnabled()) throw new Error(CONFIG_ERROR);
+
     const type = file.type.startsWith('video/') ? 'video' : 'image';
-
-    if (!backendEnabled()) {
-        const record = {
-            id: makeId(),
-            name: file.name,
-            type,
-            mime: file.type,
-            size: file.size,
-            caption: meta.caption,
-            tags: meta.tags,
-            date: new Date().toISOString(),
-            blob: file
-        };
-        await dbPut(record);
-        return record;
-    }
-
     const storagePath = `${makeId()}-${safeFileName(file.name)}`;
+
     await uploadToStorage(file, storagePath);
 
     const rows = await supabaseFetch(`/rest/v1/${BACKEND.mediaTable}`, {
@@ -826,11 +705,7 @@ async function addMedia(file, meta) {
 }
 
 async function removeMedia(record) {
-    if (!backendEnabled()) {
-        await dbDelete(record.id);
-        releaseUrl(record.id);
-        return;
-    }
+    if (!backendEnabled()) return;
 
     await supabaseFetch(
         `/rest/v1/${BACKEND.mediaTable}?id=eq.${encodeURIComponent(record.id)}`,
@@ -842,21 +717,8 @@ async function removeMedia(record) {
 /* ------------------------------------------------------------
    Gallery
    ------------------------------------------------------------ */
-const objectUrls = new Map(); // id -> object URL (kept alive for the session)
-
 function urlFor(record) {
-    if (record.remoteUrl) return record.remoteUrl;
-    if (!objectUrls.has(record.id)) {
-        objectUrls.set(record.id, URL.createObjectURL(record.blob));
-    }
-    return objectUrls.get(record.id);
-}
-
-function releaseUrl(id) {
-    if (objectUrls.has(id)) {
-        URL.revokeObjectURL(objectUrls.get(id));
-        objectUrls.delete(id);
-    }
+    return record.remoteUrl;
 }
 
 function humanSize(bytes) {
@@ -1163,7 +1025,13 @@ function initUpload() {
             return;
         }
 
-        // Disable the form and show a progress bar while writing.
+        if (!backendEnabled()) {
+            status.textContent = CONFIG_ERROR;
+            status.className = 'form-status error';
+            showToast(CONFIG_ERROR, 'error', 6000);
+            return;
+        }
+
         submitBtn.disabled = true;
         submitBtn.querySelector('.btn-text').classList.add('hidden');
         submitBtn.querySelector('.btn-loading').classList.remove('hidden');
@@ -1174,9 +1042,7 @@ function initUpload() {
         progressWrap.classList.remove('hidden');
 
         const files = pendingFiles.slice();
-        const statusMessages = backendEnabled()
-            ? ['Uploading…', 'Saving details…', 'Almost done…']
-            : ['Reading files…', 'Storing media…', 'Almost done…'];
+        const statusMessages = ['Uploading…', 'Saving details…', 'Almost done…'];
         let stored = 0;
         let failed = 0;
 
@@ -1205,7 +1071,7 @@ function initUpload() {
                 showToast(`${stored} ${stored === 1 ? 'memory' : 'memories'} added. 📸`, 'success');
             }
             if (failed > 0) {
-                showToast(`${failed} file${failed === 1 ? '' : 's'} could not be stored.`, 'error');
+                showToast(`${failed} file${failed === 1 ? '' : 's'} could not be uploaded.`, 'error');
             }
 
             status.textContent = stored > 0
@@ -1333,68 +1199,47 @@ function initLightbox() {
    ------------------------------------------------------------ */
 let visitorCount = 1;
 
-/* Count each browser session once, so navigating between pages does not
-   inflate the "Visitors" figure. */
-function visitAlreadyCounted() {
-    try {
-        if (sessionStorage.getItem('pk_counted') === '1') return true;
-        sessionStorage.setItem('pk_counted', '1');
-        return false;
-    } catch {
-        return false;
-    }
-}
-
 async function readVisitorCount() {
-    if (backendEnabled()) {
-        try {
-            const rows = await supabaseFetch(
-                `/rest/v1/${BACKEND.visitsTable}?select=count&id=eq.1`,
-                { headers: { Accept: 'application/json' } }
-            );
-            const value = rows && rows[0] ? Number(rows[0].count) : NaN;
-            if (Number.isFinite(value) && value > 0) return value;
-        } catch (err) {
-            console.error('[visits] read failed:', err);
-        }
+    if (!backendEnabled()) return 1;
+
+    try {
+        const rows = await supabaseFetch(
+            `/rest/v1/${BACKEND.visitsTable}?select=count&id=eq.1`,
+            { headers: { Accept: 'application/json' } }
+        );
+        const value = rows && rows[0] ? Number(rows[0].count) : NaN;
+        if (Number.isFinite(value) && value > 0) return value;
+    } catch (err) {
+        console.error('[visits] read failed:', err);
     }
-    return parseInt(localStorage.getItem(STORAGE_KEYS.visitors), 10) || 1;
+    return 1;
 }
 
 /**
- * Count this visit.
- * Shared mode -> calls the `increment_visits()` SQL function so the
- *                number is global across all visitors.
- * Local mode  -> keeps a per-browser counter.
- * A repeat call within the same session only reads the current value.
+ * Increment the shared visit counter via the `increment_visits()`
+ * SQL function (see supabase-schema.sql). There is no update policy
+ * on the table, so that function is the only way to change it.
  */
 async function bumpVisitorCount() {
-    if (visitAlreadyCounted()) return readVisitorCount();
-
-    if (backendEnabled()) {
-        try {
-            const total = await supabaseFetch('/rest/v1/rpc/increment_visits', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: '{}'
-            });
-            const parsed = Number(total);
-            if (Number.isFinite(parsed) && parsed > 0) return parsed;
-        } catch (err) {
-            console.error('[visits] increment failed:', err);
-        }
-    }
+    if (!backendEnabled()) return 1;
 
     try {
-        const count = (parseInt(localStorage.getItem(STORAGE_KEYS.visitors), 10) || 0) + 1;
-        localStorage.setItem(STORAGE_KEYS.visitors, String(count));
-        return count;
-    } catch {
-        return 1;
+        const total = await supabaseFetch('/rest/v1/rpc/increment_visits', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: '{}'
+        });
+        const parsed = Number(total);
+        if (Number.isFinite(parsed) && parsed > 0) return parsed;
+    } catch (err) {
+        console.error('[visits] increment failed:', err);
     }
+    return readVisitorCount();
 }
 
 async function initVisitorCount() {
+    // Only the page that displays the figure needs to count a visit.
+    if (!$('#statsSummary')) return;
     visitorCount = await bumpVisitorCount();
 }
 
@@ -1557,15 +1402,33 @@ function initScrollReveal() {
 }
 
 /* ------------------------------------------------------------
+   Not-configured notice
+   Shown when BACKEND is empty, so the site never silently looks
+   like it has no messages when the real cause is missing config.
+   ------------------------------------------------------------ */
+function showConfigNotice() {
+    console.error('[birthday] ' + CONFIG_ERROR);
+    showToast(CONFIG_ERROR, 'error', 8000);
+
+    const notice = (emptySel, buttonSel) => {
+        const empty = $(emptySel);
+        if (!empty) return;
+        empty.classList.remove('hidden');
+        const heading = empty.querySelector('h3');
+        const para = empty.querySelector('p');
+        if (heading) heading.textContent = 'Not connected';
+        if (para) para.textContent = CONFIG_ERROR;
+        $(buttonSel)?.classList.add('hidden');
+    };
+
+    notice('#emptyState', '#firstMessageBtn');
+    notice('#galleryEmptyState', '#firstUploadBtn');
+}
+
+/* ------------------------------------------------------------
    Boot
    ------------------------------------------------------------ */
 async function init() {
-    if (backendEnabled()) {
-        console.info('[birthday] Shared backend mode:', BACKEND.supabaseUrl);
-    } else {
-        console.info('[birthday] Local-only mode — set BACKEND in script.js to share messages and media across visitors.');
-    }
-
     initAmbientBackground();
     initNavigation();
     initCountdown();
@@ -1586,7 +1449,12 @@ async function init() {
 
     initScrollReveal();
 
-    // Load shared/local data, then animate the stats with final numbers.
+    if (backendEnabled()) {
+        console.info('[birthday] Shared backend mode:', BACKEND.supabaseUrl);
+    } else {
+        console.error('[birthday] ' + CONFIG_ERROR);
+    }
+
     await Promise.all([
         renderMessages(),
         loadGallery(),
@@ -1595,6 +1463,8 @@ async function init() {
 
     await updateThankYouStats();
     initStatsCounters();
+
+    if (!backendEnabled()) showConfigNotice();
 }
 
 if (document.readyState === 'loading') {
