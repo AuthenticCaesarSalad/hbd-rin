@@ -41,8 +41,8 @@ const CONFIG = {
    Leave both blank to stay in local-only mode.
    ------------------------------------------------------------ */
 const BACKEND = {
-    supabaseUrl: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-    supabaseAnonKey: '',  // the public "anon" key (safe to ship; sees only what RLS allows)
+    supabaseUrl: 'https://vveylyryemalbwidqwtu.supabase.co',      // e.g. 'https://abcdefghijkl.supabase.co'
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2ZXlseXJ5ZW1hbGJ3aWRxd3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMTc5ODAsImV4cCI6MjEwNTg5Mzk4MH0.kaGXmpf8Pgrndlhdum4Z0HTuSFPXEUNpw4NZAVsoQDY',  // the public "anon" key (safe to ship; sees only what RLS allows)
     messagesTable: 'messages',
     mediaTable: 'media',
     mediaBucket: 'birthday-media',
@@ -234,45 +234,10 @@ function initCountdown() {
 /* ------------------------------------------------------------
    Messages — shared (Supabase) or local (localStorage)
    ------------------------------------------------------------ */
-const DEFAULT_MESSAGES = [
-    {
-        id: 'seed-1',
-        name: 'Dinda',
-        relation: 'friend',
-        text: 'Happy birthday, Karina! Thank you for always being the friend who listens, laughs at my worst jokes, and shows up when it matters. May this year bring you everything you have quietly wished for.',
-        color: 'pink',
-        date: '2026-09-20T09:00:00.000Z'
-    },
-    {
-        id: 'seed-2',
-        name: 'Keluarga Besar',
-        relation: 'family',
-        text: 'Selamat ulang tahun, Putri Karina! Semoga panjang umur, sehat selalu, dan semua impianmu satu per satu menjadi nyata. Kami selalu mendoakan yang terbaik untukmu.',
-        color: 'lavender',
-        date: '2026-09-21T13:30:00.000Z'
-    },
-    {
-        id: 'seed-3',
-        name: 'Rian',
-        relation: 'colleague',
-        text: 'Happy birthday to the most organised person on the team! Working with you makes everything easier. Wishing you a year of good health, great coffee, and zero Monday-morning surprises.',
-        color: 'mint',
-        date: '2026-09-22T02:15:00.000Z'
-    },
-    {
-        id: 'seed-4',
-        name: 'Ayu',
-        relation: 'friend',
-        text: 'To the person who turns ordinary days into memories — happy birthday, Karina. Stay kind, stay curious, and please keep being exactly who you are. The world is softer with you in it. 🌸',
-        color: 'peach',
-        date: '2026-09-23T17:45:00.000Z'
-    }
-];
 
 const RELATION_LABELS = {
     friend: '👯 Friend',
     family: '👨‍👩‍👧 Family',
-    colleague: '💼 Colleague',
     other: '✨ Other'
 };
 
