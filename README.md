@@ -76,13 +76,13 @@ That single script creates:
 
 It is **idempotent** — running it again is safe and won't duplicate anything.
 You do not need to create tables or the bucket by hand in the dashboard; the
-script does both. Section 5 of the script also seeds three example wishes, but
-only while the messages table is still empty.
+script does both. The wish wall starts empty; the first real wish is whichever
+friend gets there first.
 
 > **Do not** add the `service_role` key to the site. The public `anon` key is
 > the right one — the RLS policies above are what constrain it.
 
-### 3.4 Point the site at it
+### 3.3 Point the site at it
 
 Edit the `BACKEND` block at the top of `script.js`:
 
@@ -99,12 +99,6 @@ const BACKEND = {
 
 Reload the page. The console prints `[birthday] Shared backend mode: …`.
 Leave both values empty to fall back to local-only mode.
-
-### 3.5 Optional: seed the sample wishes
-
-Already handled — section 5 of `supabase-schema.sql` inserts three example
-wishes the first time it runs, and skips them once the table has any rows.
-Delete them from the wish wall with the `×` button if you'd rather start blank.
 
 ---
 

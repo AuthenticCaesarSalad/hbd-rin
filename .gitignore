@@ -1,0 +1,2 @@
+# Local-only: SQL used to recreate the Supabase project (see README.md section 3)
+supabase-schema.sql
