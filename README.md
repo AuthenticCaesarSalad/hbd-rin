@@ -1,16 +1,28 @@
-# BirthdayWishes — Putri Karina 🎂
+# BirthdayWishes — Putri Karina 💀🔥
 
-A soft, animated birthday site built with plain **HTML, CSS and JavaScript**.
+A chaotic, high-energy birthday site built with plain **HTML, CSS and JavaScript**.
 No build step, no framework, no npm dependencies — open the files and it runs.
+
+The design is **"jomok"** — an Indonesian internet-meme aesthetic (from *jokes
+homok*) that lives on saturated clashing neon, Comic Sans energy, Impact-style
+display type, thick ink borders, hard offset shadows and absurd sticker clutter.
+Think brainrot meme page, not Pinterest wedding.
 
 ```
 index.html      Hero, countdown, quick wish form
 messages.html   Wish wall — add, read, delete
 gallery.html    Photo & video gallery — upload, filter, lightbox
 thank-you.html  Stats, confetti, social share
-styles.css      Design system, animations, responsive + a11y
+styles.css      Jomok design system, animations, responsive + a11y
 script.js       All behaviour and storage
 ```
+
+The design language, in short: the `--font-display` (Anton / Impact) is for
+shouting, `--font-fun` (Comic Neue / Comic Sans) is for everything readable,
+and `--paper` is a cream base that lets the neon breathe. Every card wobbles a
+little (`transform: rotate(...)`) and every interactive thing has a hard ink
+offset shadow that squashes on click. **Stickers** (`.sticker`) are the emoji
+clutter that sells the meme look — add them anywhere inside `<main>`.
 
 ---
 
@@ -217,10 +229,14 @@ taking a static snapshot with the messages baked in.
 ## 8. Customising
 
 - **Name / birthday:** `CONFIG` at the top of `script.js`
-  (default: 11 September).
+-  (default: 11 September).
 - **Colours:** the `:root` custom properties at the top of `styles.css`.
+  Keep them saturated and clashing — when the neon stops hurting a little,
+  it stops being jomok.
 - **Card palette:** the five `.color-*` classes in `styles.css` map to the
   colour choices in the message form.
+- **Stickers:** copy any `<span class="sticker …">🤡</span>` inside `<main>` and
+  tweak `style="--rot:-6deg; top:…; left:…"`. They hide under 860px.
 - **Accessibility:** the site targets WCAG 2.1 AA — semantic landmarks, skip
   links, ARIA labels/live regions, visible focus rings, full keyboard
   operation, and `prefers-reduced-motion` support. Keep these if you edit.

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personalized birthday messages for Putri Karina from friends and family">
-    <title>Birthday Messages for Putri Karina 💌</title>
+    <meta name="description" content="Pesan ulang tahun personal untuk Putri Karina dari teman dan keluarga">
+    <title>Pesan Ulang Tahun buat Putri Karina 💀</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <meta name="theme-color" content="#fff5f7">
+    <meta name="theme-color" content="#ff2d95">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,15 +19,15 @@
         <div class="gradient-orbs" id="gradientOrbs"></div>
     </div>
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Lompat ke konten utama</a>
 
-    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <nav class="main-nav" role="navigation" aria-label="Navigasi utama">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo" aria-label="Home - Happy Birthday Putri Karina">
-                <span class="logo-heart" aria-hidden="true">💖</span>
+            <a href="index.html" class="nav-logo" aria-label="Beranda - Happy Birthday Putri Karina">
+                <span class="logo-heart" aria-hidden="true">💀</span>
                 <span class="logo-text">Putri Karina</span>
             </a>
-            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Buka/tutup menu navigasi">
                 <span class="hamburger" aria-hidden="true"></span>
             </button>
             <ul class="nav-menu" id="nav-menu" role="menubar">
@@ -40,15 +40,19 @@
     </nav>
 
     <main id="main-content" role="main">
+        <span class="sticker sticker-pink" style="--rot:-8deg; top: 100px; right: 5%;" aria-hidden="true">💬</span>
+        <span class="sticker sticker-yellow" style="--rot:6deg; top: 240px; left: 4%;" aria-hidden="true">😭</span>
+        <span class="sticker sticker-purple" style="--rot:-6deg; top: 66vh; right: 8%;" aria-hidden="true">✨</span>
+
         <section class="page-header" aria-labelledby="page-title">
             <div class="container">
                 <div class="page-header-decor" aria-hidden="true">
-                    <span class="decor-item">💌</span>
-                    <span class="decor-item">✨</span>
-                    <span class="decor-item">💖</span>
+                    <span class="decor-item">💬</span>
+                    <span class="decor-item">💀</span>
+                    <span class="decor-item">🔥</span>
                 </div>
-                <h1 id="page-title" class="page-title">Messages of Love</h1>
-                <p class="page-subtitle">Heartfelt wishes from those who care about you most</p>
+                <h1 id="page-title" class="page-title">Pesan Para Netizen</h1>
+                <p class="page-subtitle">Wish acak dari orang-orang yang kebetulan nemu web ini</p>
             </div>
         </section>
 
@@ -58,7 +62,7 @@
                 <div class="add-message-card" id="addMessageCard">
                     <button type="button" class="add-message-toggle" id="addMessageToggle" aria-expanded="false" aria-controls="messageForm">
                         <span class="toggle-icon" aria-hidden="true">✨</span>
-                        <span>Add Your Message</span>
+                        <span>Tulis Pesan Kamu</span>
                         <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M6 9l6 6 6-6"/>
                         </svg>
@@ -66,35 +70,35 @@
                     <form id="messageForm" class="message-form hidden" novalidate>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="msgName">Your Name *</label>
-                                <input type="text" id="msgName" name="msgName" required autocomplete="name" placeholder="Your name">
+                                <label for="msgName">Nama Kamu *</label>
+                                <input type="text" id="msgName" name="msgName" required autocomplete="name" placeholder="Nama kamu">
                             </div>
                             <div class="form-group">
-                                <label for="msgRelation">Relationship</label>
+                                <label for="msgRelation">Hubungan</label>
                                 <select id="msgRelation" name="msgRelation">
-                                    <option value="friend">👯 Friend</option>
-                                    <option value="family">👨‍👩‍👧 Family</option>
-                                    <option value="colleague">💼 Colleague</option>
-                                    <option value="other">✨ Other</option>
+                                    <option value="friend">👯 Bestie</option>
+                                    <option value="family">👨‍👩‍👧 Keluarga</option>
+                                    <option value="colleague">💼 Kuliah/Kantor</option>
+                                    <option value="other">✨ Lainnya</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="msgText">Your Message *</label>
-                            <textarea id="msgText" name="msgText" required rows="5" placeholder="Share your birthday wish, a memory, or anything from the heart..."></textarea>
+                            <label for="msgText">Pesan Kamu *</label>
+                            <textarea id="msgText" name="msgText" required rows="5" placeholder="Baguin wish, kenangan, atau apa aja yang masih nyangkut di kepala..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="msgColor">Card Color</label>
-                            <div class="color-options" role="radiogroup" aria-label="Choose card color">
+                            <label for="msgColor">Warna Kartu</label>
+                            <div class="color-options" role="radiogroup" aria-label="Pilih warna kartu">
                                 <label class="color-option">
                                     <input type="radio" name="msgColor" value="pink" checked>
                                     <span class="color-swatch" style="--color: #fce4ec" aria-hidden="true"></span>
-                                    <span>Blush</span>
+                                    <span>Pink</span>
                                 </label>
                                 <label class="color-option">
                                     <input type="radio" name="msgColor" value="lavender">
                                     <span class="color-swatch" style="--color: #e8eaf6" aria-hidden="true"></span>
-                                    <span>Lavender</span>
+                                    <span>Ungu Muda</span>
                                 </label>
                                 <label class="color-option">
                                     <input type="radio" name="msgColor" value="mint">
@@ -104,20 +108,20 @@
                                 <label class="color-option">
                                     <input type="radio" name="msgColor" value="peach">
                                     <span class="color-swatch" style="--color: #fff3e0" aria-hidden="true"></span>
-                                    <span>Peach</span>
+                                    <span>Persik</span>
                                 </label>
                                 <label class="color-option">
                                     <input type="radio" name="msgColor" value="cream">
                                     <span class="color-swatch" style="--color: #fafafa" aria-hidden="true"></span>
-                                    <span>Cream</span>
+                                    <span>Krim</span>
                                 </label>
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelMessage">Cancel</button>
+                            <button type="button" class="btn btn-secondary" id="cancelMessage">Batal</button>
                             <button type="submit" class="btn btn-primary">
-                                <span class="btn-icon" aria-hidden="true">💌</span>
-                                Add Message
+                                <span class="btn-icon" aria-hidden="true">💬</span>
+                                Kirim Pesan
                             </button>
                         </div>
                         <p id="msgFormStatus" class="form-status" aria-live="polite"></p>
@@ -125,28 +129,28 @@
                 </div>
 
                 <!-- Messages Grid -->
-                <div class="messages-grid" id="messagesGrid" role="list" aria-label="Birthday messages">
+                <div class="messages-grid" id="messagesGrid" role="list" aria-label="Pesan ulang tahun">
                     <!-- Messages will be dynamically inserted here -->
                 </div>
 
                 <!-- Empty State -->
                 <div class="empty-state hidden" id="emptyState" role="status">
-                    <div class="empty-icon" aria-hidden="true">💌</div>
-                    <h3>No Messages Yet</h3>
-                    <p>Be the first to leave a birthday wish for Putri Karina!</p>
+                    <div class="empty-icon" aria-hidden="true">💬</div>
+                    <h3>Belum Ada Pesan</h3>
+                    <p>Jadi orang pertama yang kasih wish buat Putri Karina!</p>
                     <button type="button" class="btn btn-primary" id="firstMessageBtn">
                         <span class="btn-icon" aria-hidden="true">✨</span>
-                        Write the First Message
+                        Tulis Pesan Pertama
                     </button>
                 </div>
             </div>
         </section>
 
         <!-- Message Modal for Full View -->
-        <dialog id="messageModal" class="message-modal" aria-label="Full birthday message">
+        <dialog id="messageModal" class="message-modal" aria-label="Pesan ulang tahun lengkap">
             <div class="modal-backdrop" tabindex="-1"></div>
             <div class="modal-content message-card-modal" role="document">
-                <button class="modal-close" aria-label="Close message">&times;</button>
+                <button class="modal-close" aria-label="Tutup pesan">&times;</button>
                 <div class="modal-message" id="modalMessage"></div>
             </div>
         </dialog>
@@ -155,13 +159,13 @@
     <footer class="main-footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
-                <p class="footer-text">Made with 💖 for Putri Karina's Special Day</p>
+                <p class="footer-text">Dibuat dengan 💀 buat hari paling sibuk di internet</p>
                 <p class="footer-year">2026</p>
             </div>
         </div>
     </footer>
 
-    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifikasi"></div>
 
     <script src="script.js"></script>
 </body>

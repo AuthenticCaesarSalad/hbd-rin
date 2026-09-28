@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Photo and video gallery for Putri Karina's birthday celebration">
-    <title>Memory Gallery for Putri Karina 📸</title>
+    <meta name="description" content="Galeri foto dan video perayaan ulang tahun Putri Karina">
+    <title>Galeri Kenangan Putri Karina 📸</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <meta name="theme-color" content="#fff5f7">
+    <meta name="theme-color" content="#ff2d95">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,15 +19,15 @@
         <div class="gradient-orbs" id="gradientOrbs"></div>
     </div>
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Lompat ke konten utama</a>
 
-    <nav class="main-nav" role="navigation" aria-label="Main navigation">
+    <nav class="main-nav" role="navigation" aria-label="Navigasi utama">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo" aria-label="Home - Happy Birthday Putri Karina">
-                <span class="logo-heart" aria-hidden="true">💖</span>
+            <a href="index.html" class="nav-logo" aria-label="Beranda - Happy Birthday Putri Karina">
+                <span class="logo-heart" aria-hidden="true">💀</span>
                 <span class="logo-text">Putri Karina</span>
             </a>
-            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation menu">
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Buka/tutup menu navigasi">
                 <span class="hamburger" aria-hidden="true"></span>
             </button>
             <ul class="nav-menu" id="nav-menu" role="menubar">
@@ -40,15 +40,19 @@
     </nav>
 
     <main id="main-content" role="main">
+        <span class="sticker sticker-cyan" style="--rot:-9deg; top: 100px; right: 5%;" aria-hidden="true">📸</span>
+        <span class="sticker sticker-lime" style="--rot:8deg; top: 250px; left: 3%;" aria-hidden="true">🎥</span>
+        <span class="sticker sticker-yellow" style="--rot:-7deg; top: 70vh; right: 9%;" aria-hidden="true">✨</span>
+
         <section class="page-header" aria-labelledby="page-title">
             <div class="container">
                 <div class="page-header-decor" aria-hidden="true">
                     <span class="decor-item">📸</span>
-                    <span class="decor-item">✨</span>
+                    <span class="decor-item">💀</span>
                     <span class="decor-item">🎞️</span>
                 </div>
-                <h1 id="page-title" class="page-title">Memory Gallery</h1>
-                <p class="page-subtitle">Precious moments captured forever</p>
+                <h1 id="page-title" class="page-title">Galeri Kenangan</h1>
+                <p class="page-subtitle">Momen berharga yang bakal selalu diingat</p>
             </div>
         </section>
 
@@ -58,36 +62,36 @@
                 <div class="upload-section" id="uploadSection">
                     <button type="button" class="upload-toggle" id="uploadToggle" aria-expanded="false" aria-controls="uploadForm">
                         <span class="toggle-icon" aria-hidden="true">📤</span>
-                        <span>Add Photos & Videos</span>
+                        <span>Tambah Foto &amp; Video</span>
                         <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M6 9l6 6 6-6"/>
                         </svg>
                     </button>
                     <form id="uploadForm" class="upload-form hidden" novalidate>
                         <div class="form-group">
-                            <label for="mediaFiles">Select Photos or Videos *</label>
-                            <div class="file-drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Drop zone for media files">
+                            <label for="mediaFiles">Pilih Foto atau Video *</label>
+                            <div class="file-drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Area drop file media">
                                 <input type="file" id="mediaFiles" name="mediaFiles" accept="image/*,video/*" multiple hidden aria-describedby="fileHint">
                                 <div class="drop-zone-content" aria-hidden="true">
                                     <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 10l-5 5-5-5M12 15V3"/>
                                     </svg>
-                                    <p>Drag & drop files here, or click to browse</p>
-                                    <span id="fileHint" class="file-hint">Supports: JPG, PNG, GIF, MP4, WebM (max 50MB each)</span>
+                                    <p>Drag &amp; drop file ke sini, atau klik buat pilih</p>
+                                    <span id="fileHint" class="file-hint">Dukung: JPG, PNG, GIF, MP4, WebM (maks 50MB per file)</span>
                                 </div>
                                 <div class="file-preview" id="filePreview" aria-live="polite"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mediaCaption">Caption (optional)</label>
-                            <input type="text" id="mediaCaption" name="mediaCaption" placeholder="Add a caption or memory description..." maxlength="200">
+                            <label for="mediaCaption">Caption (opsional)</label>
+                            <input type="text" id="mediaCaption" name="mediaCaption" placeholder="Tambah caption atau deskripsi kenangan..." maxlength="200">
                         </div>
                         <div class="form-group">
-                            <label for="mediaTags">Tags (optional)</label>
-                            <input type="text" id="mediaTags" name="mediaTags" placeholder="e.g., birthday, 2024, celebration" maxlength="100">
+                            <label for="mediaTags">Tag (opsional)</label>
+                            <input type="text" id="mediaTags" name="mediaTags" placeholder="contoh: ulang-tahun, 2024, perayaan" maxlength="100">
                         </div>
                         <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="cancelUpload">Cancel</button>
+                            <button type="button" class="btn btn-secondary" id="cancelUpload">Batal</button>
                             <button type="submit" class="btn btn-primary" id="uploadSubmit">
                                 <span class="btn-icon" aria-hidden="true">📤</span>
                                 <span class="btn-text">Upload</span>
@@ -98,11 +102,11 @@
                                             <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
                                         </path>
                                     </svg>
-                                    Uploading...
+                                    Lagi Upload...
                                 </span>
                             </button>
                         </div>
-                        <div id="uploadProgress" class="upload-progress hidden" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Upload progress">
+                        <div id="uploadProgress" class="upload-progress hidden" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Proses upload">
                             <div class="progress-bar" id="progressBar"></div>
                             <span class="progress-text" id="progressText">0%</span>
                         </div>
@@ -111,25 +115,25 @@
                 </div>
 
                 <!-- Gallery Filter -->
-                <div class="gallery-filter" role="group" aria-label="Filter media by type">
-                    <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
-                    <button type="button" class="filter-btn" data-filter="image" aria-pressed="false">📷 Photos</button>
-                    <button type="button" class="filter-btn" data-filter="video" aria-pressed="false">🎥 Videos</button>
+                <div class="gallery-filter" role="group" aria-label="Filter media berdasarkan jenis">
+                    <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">Semua</button>
+                    <button type="button" class="filter-btn" data-filter="image" aria-pressed="false">📷 Foto</button>
+                    <button type="button" class="filter-btn" data-filter="video" aria-pressed="false">🎥 Video</button>
                 </div>
 
                 <!-- Gallery Grid -->
-                <div class="gallery-grid" id="galleryGrid" role="list" aria-label="Media gallery">
+                <div class="gallery-grid" id="galleryGrid" role="list" aria-label="Galeri media">
                     <!-- Media items will be dynamically inserted here -->
                 </div>
 
                 <!-- Empty State -->
                 <div class="empty-state hidden" id="galleryEmptyState" role="status">
                     <div class="empty-icon" aria-hidden="true">📸</div>
-                    <h3>No Memories Yet</h3>
-                    <p>Upload the first photo or video to start the gallery!</p>
+                    <h3>Belum Ada Kenangan</h3>
+                    <p>Upload foto pertama, sebelum gallery ini kelihatan kosong melompong!</p>
                     <button type="button" class="btn btn-primary" id="firstUploadBtn">
                         <span class="btn-icon" aria-hidden="true">📤</span>
-                        Upload First Memory
+                        Upload Kenangan Pertama
                     </button>
                 </div>
             </div>
@@ -139,13 +143,13 @@
         <dialog id="lightboxModal" class="lightbox-modal" aria-labelledby="lightboxTitle" aria-describedby="lightboxDesc">
             <div class="lightbox-backdrop" tabindex="-1"></div>
             <div class="lightbox-content" role="document">
-                <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
-                <button class="lightbox-nav lightbox-prev" aria-label="Previous media" hidden>
+                <button class="lightbox-close" aria-label="Tutup lightbox">&times;</button>
+                <button class="lightbox-nav lightbox-prev" aria-label="Media sebelumnya" hidden>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M15 18l-6-6 6-6"/>
                     </svg>
                 </button>
-                <button class="lightbox-nav lightbox-next" aria-label="Next media" hidden>
+                <button class="lightbox-nav lightbox-next" aria-label="Media selanjutnya" hidden>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M9 18l6-6-6-6"/>
                     </svg>
@@ -163,13 +167,13 @@
     <footer class="main-footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
-                <p class="footer-text">Made with 💖 for Putri Karina's Special Day</p>
+                <p class="footer-text">Dibuat dengan 💀 buat hari paling sibuk di internet</p>
                 <p class="footer-year">2026</p>
             </div>
         </div>
     </footer>
 
-    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+    <div id="toastContainer" class="toast-container" role="region" aria-live="polite" aria-label="Notifikasi"></div>
 
     <script src="script.js"></script>
 </body>

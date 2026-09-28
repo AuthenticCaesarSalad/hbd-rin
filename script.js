@@ -29,19 +29,19 @@ const CONFIG = {
 };
 
 /* ------------------------------------------------------------
-   REQUIRED: your Supabase project details.
+    REQUIRED: your Supabase project details.
 
-   Supabase dashboard -> Settings -> API:
-     supabaseUrl     = "Project URL"
-     supabaseAnonKey = "anon public" key
+    Supabase dashboard -> Settings -> API:
+      supabaseUrl     = "Project URL"
+      supabaseAnonKey = "anon public" key
 
-   Use the anon key, NOT the service_role key — the anon key is
-   public by design and is constrained by the Row Level Security
-   policies in supabase-schema.sql.
-   ------------------------------------------------------------ */
+    Gunakan anon key, BUKAN service_role key — anon key memang
+    publik dan dibatasi oleh Row Level Security yang ada di
+    supabase-schema.sql.
+    ------------------------------------------------------------ */
 const BACKEND = {
-    supabaseUrl: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-    supabaseAnonKey: '',  // the public "anon" key
+    supabaseUrl: 'https://vveylyryemalbwidqwtu.supabase.co',      // e.g. 'https://abcdefghijkl.supabase.co'
+    supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2ZXlseXJ5ZW1hbGJ3aWRxd3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMTc5ODAsImV4cCI6MjEwNTg5Mzk4MH0.kaGXmpf8Pgrndlhdum4Z0HTuSFPXEUNpw4NZAVsoQDY',  // the public "anon" key
     messagesTable: 'messages',
     mediaTable: 'media',
     mediaBucket: 'birthday-media',
@@ -53,7 +53,7 @@ function backendEnabled() {
 }
 
 const CONFIG_ERROR =
-    'Backend not configured. Set BACKEND.supabaseUrl and BACKEND.supabaseAnonKey at the top of script.js.';
+    'Belum terhubung ke server. Isi BACKEND.supabaseUrl dan BACKEND.supabaseAnonKey di bagian atas script.js.';
 
 const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB per file
 const MAX_FILES_PER_UPLOAD = 10;
@@ -108,7 +108,7 @@ function initAmbientBackground() {
 
     const heartsHost = $('#floatingHearts');
     if (heartsHost && !heartsHost.childElementCount) {
-        const glyphs = ['💖', '🌸', '✨', '💕', '🎈', '💗', '🌟'];
+        const glyphs = ['💀', '😭', '🔥', '✨', '💅', '🤡', '💃', '🎉', '🌶️', '🗣️'];
         const count = window.innerWidth < 700 ? 8 : 16;
 
         for (let i = 0; i < count; i++) {
@@ -236,12 +236,12 @@ async function supabaseFetch(path, options = {}) {
     try {
         response = await fetch(base + path, Object.assign({}, options, { headers }));
     } catch {
-        throw new Error('Network error — the server could not be reached.');
+        throw new Error('Gangguan jaringan — servernya nggak terjangkau.');
     }
 
     if (!response.ok) {
         const detail = await response.text().catch(() => '');
-        throw new Error(`Server responded ${response.status}. ${detail.slice(0, 160)}`);
+        throw new Error(`Server jawab ${response.status}. ${detail.slice(0, 160)}`);
     }
 
     const raw = await response.text();
@@ -260,10 +260,10 @@ function formatDate(iso) {
 }
 
 const RELATION_LABELS = {
-    friend: '👯 Friend',
-    family: '👨‍👩‍👧 Family',
-    colleague: '💼 Colleague',
-    other: '✨ Other'
+    friend: '👯 Bestie',
+    family: '👨‍👩‍👧 Keluarga',
+    colleague: '💼 Kuliah/Kantor',
+    other: '✨ Lainnya'
 };
 
 /* ------------------------------------------------------------
@@ -291,7 +291,7 @@ async function loadMessages() {
         return (rows || []).map(rowToMessage);
     } catch (err) {
         console.error('[messages] load failed:', err);
-        showToast('Could not load messages from the server.', 'error');
+        showToast('Pesan nggak bisa dimuat dari server.', 'error');
         return [];
     }
 }
@@ -320,7 +320,7 @@ async function addMessage(msg) {
         return rows && rows[0] ? rowToMessage(rows[0]) : msg;
     } catch (err) {
         console.error('[messages] add failed:', err);
-        showToast('Could not send your wish. Please try again.', 'error');
+        showToast('Wish kamu nggak terkirim. Coba lagi yuk.', 'error');
         return null;
     }
 }
@@ -336,7 +336,7 @@ async function removeMessage(id) {
         return true;
     } catch (err) {
         console.error('[messages] delete failed:', err);
-        showToast('Could not delete the message.', 'error');
+        showToast('Pesan nggak bisa dihapus.', 'error');
         return false;
     }
 }
@@ -355,10 +355,10 @@ function createMessageCard(msg, index) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'message-delete';
-    del.setAttribute('aria-label', `Delete message from ${msg.name}`);
+    del.setAttribute('aria-label', `Hapus pesan dari ${msg.name}`);
     del.textContent = '×';
     del.addEventListener('click', () => {
-        if (confirm(`Delete the message from ${msg.name}?`)) deleteMessage(msg.id);
+        if (confirm(`Hapus pesan dari ${msg.name}?`)) deleteMessage(msg.id);
     });
 
     const relation = document.createElement('span');
@@ -385,7 +385,7 @@ function createMessageCard(msg, index) {
     const readMore = document.createElement('button');
     readMore.type = 'button';
     readMore.className = 'message-read-more';
-    readMore.textContent = 'Read full message';
+    readMore.textContent = 'Baca pesan lengkap';
     readMore.addEventListener('click', () => openMessageModal(msg));
 
     card.append(del, relation, text, footer, readMore);
@@ -416,7 +416,7 @@ async function deleteMessage(id) {
     if (!ok) return;
     await renderMessages();
     await updateThankYouStats();
-    showToast('Message removed.', 'info');
+    showToast('Pesan kehapus.', 'info');
 }
 
 function initMessageForm() {
@@ -454,7 +454,7 @@ function initMessageForm() {
 
         if (!name || !text) {
             if (status) {
-                status.textContent = 'Please fill in both your name and your message.';
+                status.textContent = 'Isi dulu nama dan pesannya, ya.';
                 status.className = 'form-status error';
             }
             (!name ? $('#msgName') : $('#msgText'))?.focus();
@@ -463,7 +463,7 @@ function initMessageForm() {
 
         if (submit) submit.disabled = true;
         if (status) {
-            status.textContent = 'Sending…';
+            status.textContent = 'Lagi ngirim…';
             status.className = 'form-status';
         }
 
@@ -480,7 +480,7 @@ function initMessageForm() {
 
         if (!saved) {
             if (status) {
-                status.textContent = 'Your wish could not be sent. Please try again.';
+                status.textContent = 'Wish kamu nggak terkirim. Coba lagi yuk.';
                 status.className = 'form-status error';
             }
             return;
@@ -494,7 +494,7 @@ function initMessageForm() {
         setFormOpen(false);
         await renderMessages();
         await updateThankYouStats();
-        showToast(`Thank you, ${name}! Your wish was added. 💌`, 'success');
+        showToast(`Makasih, ${name}! Wish kamu masuk. 💀`, 'success');
     });
 }
 
@@ -551,7 +551,7 @@ function initQuickMessageForm() {
 
         if (!name || !text) {
             if (status) {
-                status.textContent = 'Please fill in your name and message.';
+                status.textContent = 'Isi dulu nama dan pesannya, ya.';
                 status.className = 'form-status error';
             }
             return;
@@ -559,7 +559,7 @@ function initQuickMessageForm() {
 
         if (submit) submit.disabled = true;
         if (status) {
-            status.textContent = 'Sending…';
+            status.textContent = 'Lagi ngirim…';
             status.className = 'form-status';
         }
 
@@ -576,7 +576,7 @@ function initQuickMessageForm() {
 
         if (!saved) {
             if (status) {
-                status.textContent = 'Your wish could not be sent. Please try again.';
+                status.textContent = 'Wish kamu nggak terkirim. Coba lagi yuk.';
                 status.className = 'form-status error';
             }
             return;
@@ -584,10 +584,10 @@ function initQuickMessageForm() {
 
         form.reset();
         if (status) {
-            status.textContent = `Thank you, ${name}! Your wish is saved in Messages.`;
+            status.textContent = `Makasih, ${name}! Wish kamu udah tersimpan di halaman Pesan.`;
             status.className = 'form-status success';
         }
-        showToast('Your birthday wish was saved. 💌', 'success');
+        showToast('Wish ulang tahun kamu tersimpan. 💀', 'success');
     });
 }
 
@@ -625,7 +625,7 @@ async function uploadToStorage(file, storagePath) {
 
     if (!response.ok) {
         const detail = await response.text().catch(() => '');
-        throw new Error(`Upload failed (${response.status}). ${detail.slice(0, 160)}`);
+        throw new Error(`Upload gagal (${response.status}). ${detail.slice(0, 160)}`);
     }
 }
 
@@ -670,7 +670,7 @@ async function listMedia() {
         return (rows || []).map(rowToMedia);
     } catch (err) {
         console.error('[media] load failed:', err);
-        showToast('Could not load the gallery from the server.', 'error');
+        showToast('Galeri nggak bisa dimuat dari server.', 'error');
         return [];
     }
 }
@@ -769,17 +769,17 @@ function createGalleryItem(record, index) {
     const open = document.createElement('button');
     open.type = 'button';
     open.className = 'gallery-open';
-    open.setAttribute('aria-label', `Open ${record.type}: ${record.caption || record.name}`);
+    open.setAttribute('aria-label', `Buka ${record.type === 'video' ? 'video' : 'foto'}: ${record.caption || record.name}`);
     open.appendChild(overlay);
     open.addEventListener('click', () => openLightbox(record.id));
 
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'gallery-delete';
-    del.setAttribute('aria-label', `Delete ${record.name}`);
+    del.setAttribute('aria-label', `Hapus ${record.name}`);
     del.textContent = '×';
     del.addEventListener('click', async () => {
-        if (!confirm(`Delete "${record.caption || record.name}"?`)) return;
+        if (!confirm(`Hapus "${record.caption || record.name}"?`)) return;
 
         del.disabled = true;
         try {
@@ -787,10 +787,10 @@ function createGalleryItem(record, index) {
             galleryItems = galleryItems.filter((r) => r.id !== record.id);
             renderGallery();
             await updateThankYouStats();
-            showToast('Memory deleted.', 'info');
+            showToast('Kenangan kehapus.', 'info');
         } catch {
             del.disabled = false;
-            showToast('Could not delete this item.', 'error');
+            showToast('Item ini nggak bisa dihapus.', 'error');
         }
     });
 
@@ -830,8 +830,8 @@ function renderGallery() {
         const heading = empty.querySelector('h3');
         const para = empty.querySelector('p');
         if (showEmpty && heading && para) {
-            heading.textContent = 'No Memories Yet';
-            para.textContent = 'Upload the first photo or video to start the gallery!';
+            heading.textContent = 'Belum Ada Apa-Apa 😭';
+            para.textContent = 'Upload foto pertama, sebelum gallery ini kelihatan kosong melompong!';
         }
     }
 
@@ -840,7 +840,7 @@ function renderGallery() {
         note.className = 'form-status';
         note.style.gridColumn = '1 / -1';
         note.style.textAlign = 'center';
-        note.textContent = `No ${galleryFilter === 'video' ? 'videos' : 'photos'} uploaded yet.`;
+        note.textContent = `Belum ada ${galleryFilter === 'video' ? 'video' : 'foto'} yang di-upload, buruan. 😤`;
         grid.appendChild(note);
     }
 }
@@ -954,15 +954,15 @@ function initUpload() {
             const isVideo = file.type.startsWith('video/');
 
             if (!isImage && !isVideo) {
-                showToast(`"${file.name}" is not an image or video.`, 'error');
+                showToast(`"${file.name}" bukan gambar atau video.`, 'error');
                 continue;
             }
             if (file.size > MAX_FILE_BYTES) {
-                showToast(`"${file.name}" is larger than 50 MB.`, 'error');
+                showToast(`"${file.name}" lebih besar dari 50 MB.`, 'error');
                 continue;
             }
             if (pendingFiles.length >= MAX_FILES_PER_UPLOAD) {
-                showToast(`Up to ${MAX_FILES_PER_UPLOAD} files per upload.`, 'info');
+                showToast(`Maksimal ${MAX_FILES_PER_UPLOAD} file per upload.`, 'info');
                 break;
             }
             pendingFiles.push(file);
@@ -994,7 +994,7 @@ function initUpload() {
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'file-remove';
-            remove.setAttribute('aria-label', `Remove ${file.name}`);
+            remove.setAttribute('aria-label', `Hapus ${file.name}`);
             remove.textContent = '×';
             remove.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -1020,7 +1020,7 @@ function initUpload() {
             .slice(0, 8);
 
         if (pendingFiles.length === 0) {
-            status.textContent = 'Please choose at least one photo or video.';
+            status.textContent = 'Pilih minimal satu foto atau video dulu.';
             status.className = 'form-status error';
             return;
         }
@@ -1042,7 +1042,7 @@ function initUpload() {
         progressWrap.classList.remove('hidden');
 
         const files = pendingFiles.slice();
-        const statusMessages = ['Uploading…', 'Saving details…', 'Almost done…'];
+        const statusMessages = ['Lagi upload…', 'Nyimpen data…', 'Hampir kelar…'];
         let stored = 0;
         let failed = 0;
 
@@ -1068,15 +1068,15 @@ function initUpload() {
             }
 
             if (stored > 0) {
-                showToast(`${stored} ${stored === 1 ? 'memory' : 'memories'} added. 📸`, 'success');
+                showToast(`${stored} kenangan masuk. 📸`, 'success');
             }
             if (failed > 0) {
-                showToast(`${failed} file${failed === 1 ? '' : 's'} could not be uploaded.`, 'error');
+                showToast(`${failed} file nggak bisa di-upload.`, 'error');
             }
 
             status.textContent = stored > 0
-                ? `Successfully uploaded ${stored} ${stored === 1 ? 'file' : 'files'}.`
-                : 'Nothing was uploaded.';
+                ? `Berhasil upload ${stored} file.`
+                : 'Nggak ada yang ke-upload.';
             status.className = stored > 0 ? 'form-status success' : 'form-status error';
 
             pendingFiles = [];
@@ -1128,7 +1128,7 @@ function paintLightbox() {
 
     const mediaHost = $('#lightboxMedia');
     const title = $('#lightboxTitle');
-    const caption = $('#lightboxCaption') || $('#lightboxDesc');
+    const caption = $('#lightboxDesc');
     const meta = $('#lightboxMeta');
 
     if (record.type === 'video') {
@@ -1146,7 +1146,7 @@ function paintLightbox() {
     }
 
     title.textContent = record.name;
-    if (caption) caption.textContent = record.caption || 'A precious memory.';
+    if (caption) caption.textContent = record.caption || 'Kenangan yang berharga.';
 
     meta.replaceChildren();
     record.tags?.forEach((tag) => {
@@ -1238,7 +1238,7 @@ async function bumpVisitorCount() {
 }
 
 async function initVisitorCount() {
-    // Only the page that displays the figure needs to count a visit.
+    // Hanya halaman yang menampilkan angka ini yang menghitung kunjungan.
     if (!$('#statsSummary')) return;
     visitorCount = await bumpVisitorCount();
 }
@@ -1322,7 +1322,8 @@ function initShare() {
     if (!buttons.length) return;
 
     const url = window.location.href.split('#')[0].replace(/thank-you\.html.*$/, 'index.html') || window.location.href;
-    const text = `Happy Birthday ${CONFIG.name}! 🎂 Come celebrate and leave a birthday wish:`;
+    const text = `AYO BIKIN HARAPAN ULANG TAHUN BUKA ${CONFIG.name} 💀🔥 — capeee lu bikin dia senyum, langsung ke sini:`;
+    const shortText = `Wish ulang tahun buat ${CONFIG.name} 🎂`;
 
     buttons.forEach((btn) => {
         btn.addEventListener('click', async () => {
@@ -1333,7 +1334,7 @@ function initShare() {
             const targets = {
                 whatsapp: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
                 facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-                twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shortText)}&url=${encodedUrl}`,
                 instagram: null // Instagram has no web share URL
             };
 
@@ -1344,7 +1345,7 @@ function initShare() {
 
             if (platform === 'instagram') {
                 await copyLink(url);
-                showToast('Link copied — paste it in your Instagram story! 📸', 'success');
+                showToast('Link udah disalin — tinggal paste ke story Instagram kamu! 📸', 'success');
                 return;
             }
 
@@ -1368,9 +1369,9 @@ function initShare() {
                 document.execCommand('copy');
                 temp.remove();
             }
-            showToast('Link copied to clipboard. 🔗', 'success');
+            showToast('Link disalin ke clipboard. 🔗', 'success');
         } catch {
-            showToast(`Copy failed. Here is the link: ${link}`, 'info', 6000);
+            showToast(`Nggak bisa nyalin. Ini linknya: ${link}`, 'info', 6000);
         }
     }
 }
@@ -1416,7 +1417,7 @@ function showConfigNotice() {
         empty.classList.remove('hidden');
         const heading = empty.querySelector('h3');
         const para = empty.querySelector('p');
-        if (heading) heading.textContent = 'Not connected';
+        if (heading) heading.textContent = 'Belum Terhubung';
         if (para) para.textContent = CONFIG_ERROR;
         $(buttonSel)?.classList.add('hidden');
     };
